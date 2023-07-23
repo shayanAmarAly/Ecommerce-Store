@@ -3,15 +3,11 @@ import { stringify, v4 as uuidv4 } from 'uuid';
 import { useAuth } from "@clerk/nextjs";
 import Link from "next/link";
 import { client } from "../../../../sanity/lib/client";
-import { use } from "react";
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react'
-import realoding from "@/components/navbar"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from '@/app/store'
 import { fetchCartData } from '@/app/counter/counterSlice';
-import { toast } from 'react-hot-toast';
-import { currentUser, auth } from '@clerk/nextjs';
+import Image from 'next/image';
 
 const detail = async (param: any) => {
   const bac = `${param}`;
@@ -21,14 +17,11 @@ const detail = async (param: any) => {
 }
 
 
-const notify = () => toast("Product added into cart");
-
 const Page = ({ params }: { params: { slugs: string } }) => {
   const [item, setItem] = useState<any>();
   const [count, setCount] = useState(0);
-  // const { userId } = auth();
   const { userId } = useAuth();
-    console.log("product detail page user id is " , userId);
+  console.log("product detail page user id is " , userId);
   console.log(typeof userId);
   const uuid = uuidv4().slice(20);
   const dispatch = useDispatch<AppDispatch>();
@@ -55,13 +48,13 @@ const Page = ({ params }: { params: { slugs: string } }) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  const UUID = generateRandomNumber();
-
+  
   const postContent = async (item: any) => {
     console.log(item);
     console.log("unique id", uuid);
     console.log("user id is ", userId);
-    const request = await fetch("http://localhost:3000/api/cart", {
+    const UUID = generateRandomNumber();
+    const request = await fetch("/api/cart", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
@@ -100,16 +93,13 @@ const Page = ({ params }: { params: { slugs: string } }) => {
     <>
       {item ? (
         <div>
-          {/* <h1>{item.name}</h1>
-        <h1>{item.price}</h1>
-        <h1>{item.subCategory}</h1> */}
           <div>
             <div className=' tablet:flex small:flex gap-5 tablet:justify-center mobile:ml-10 table:ml-0 py-20 '>
               <div>
-                <img className='tablet:w-[100px] mobile:hidden small:hidden small:w-[50px]' src={item.image} />
+                <Image width={100} height={100} alt='images' className='tablet:w-[100px] mobile:hidden small:hidden small:w-[50px]' src={item.image} />
               </div>
               <div>
-                <img className='tablet:w-[500px] mobile:w-[200px]' src={item.image} />
+                <Image width={100} height={100} alt='images' className='tablet:w-[500px] mobile:w-[200px]' src={item.image} />
               </div>
               <div>
                 <h1 className='tablet:text-3xl small:text-2xl mobile:text-lg mobile:mt-0 tablet:mt-20'>{item.name}</h1>
@@ -167,15 +157,12 @@ const Page = ({ params }: { params: { slugs: string } }) => {
                 </div>
               </div>
             </div>
-
           </div>
         </div>
-
       ) : (
         <h1>Products are in a loading state</h1>
       )}
     </>
-
   )
 }
 

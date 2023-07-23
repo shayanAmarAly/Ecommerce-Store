@@ -1,4 +1,5 @@
 import React from 'react'
+import Image from 'next/image'
 
 const Section1 = () => {
     return (
@@ -12,7 +13,10 @@ const Section1 = () => {
                             <h1 className='font-bold text-2xl mt-14 '>GET UP TO 60%</h1>
                             <h1 className='text-sm'>For the summer season</h1>
                         </span>
-                        <img src='https://full-stack-ecommerce-clothing-web.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fevent1.6f776995.png&w=384&q=75' />
+                        <Image 
+                        width={100}
+                        height={100}
+                        alt='secImg' src='https://full-stack-ecommerce-clothing-web.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fevent1.6f776995.png&w=384&q=75' />
                     </div>
                     <div className='bg-[#212121] h-48 mt-5  text-white text-center pt-10'>
                         <h1 className='font-bold text-3xl'>GET 30% Off</h1>
@@ -24,12 +28,18 @@ const Section1 = () => {
                     <div className='bg-[#efe1c7] p-5 h-96  w-72'>
                         <p>Flex Sweatshirt</p>
                         <p className='flex '><p className='line-through'>$100.00</p> <h1 className='pl-5 font-bold'>$75.00</h1></p>
-                        <img className=" h-72 mt-7 w-60" src='https://full-stack-ecommerce-clothing-web.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fevent2.b5f201ac.png&w=384&q=75' />
+                        <Image
+                        width={100}
+                        height={100}
+                        alt='secImg' className=" h-72 mt-7 w-60" src='https://full-stack-ecommerce-clothing-web.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fevent2.b5f201ac.png&w=384&q=75' />
                     </div>
                     <div className='bg-[#d7d7d9] mobile:mt-5 tablet:mt-0 p-5 h-96  w-72'>
                         <p>Flex Push Button Bomber</p>
                         <p className='flex '><p className='line-through'>$100.00</p> <h1 className='pl-5 font-bold'>$75.00</h1></p>
-                        <img className=" h-72 mt-7 w-60" src='https://full-stack-ecommerce-clothing-web.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fevent3.798fa92b.png&w=384&q=75' />
+                        <Image
+                        width={100}
+                        height={100}
+                        alt='secImg' className=" h-72 mt-7 w-60" src='https://full-stack-ecommerce-clothing-web.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fevent3.798fa92b.png&w=384&q=75' />
                     </div>
                 </div>
             </div>

@@ -4,7 +4,6 @@ import axios from "axios";
 import { loadStripe } from "@stripe/stripe-js";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { useEffect, useState } from "react";
-import Checkout from "@/app/checkout/page"
 import { AppDispatch } from "@/app/store";
 import CartData from "@/components/displayCheckoutProducts"
 import FetchCartButton from "@/components/FetchCheckoutProducts"

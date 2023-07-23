@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import React from 'react'
+import Image from 'next/image';
 
 const Section2 = () => {
     return (
@@ -33,7 +33,11 @@ const Section2 = () => {
 
                     <span className='small:flex tablet:mt-32 gap-10 tablet:mx-10 small:mt-52'>
 
-                        <img  className="tablet:w-[300px] small:w-[200px] small:h-[182px] tablet:h-[282px]" src='https://full-stack-ecommerce-clothing-web.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Ffeature.1118a2f3.png&w=384&q=75' />
+                        <Image  className="tablet:w-[300px] small:w-[200px] small:h-[182px] tablet:h-[282px]"
+                        alt='imge not found'
+                        width={100}
+                        height={100}
+                        src='https://full-stack-ecommerce-clothing-web.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Ffeature.1118a2f3.png&w=384&q=75' />
 
                         <span>
                             <p className='tablet:text-md small:text-sm'>This piece is ethically crafted in our small family-owned workshop

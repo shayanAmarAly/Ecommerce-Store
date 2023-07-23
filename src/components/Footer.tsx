@@ -2,21 +2,26 @@ import React from 'react'
 import { BsTwitter } from 'react-icons/bs'
 import { FaFacebookF } from 'react-icons/fa'
 import { FaLinkedinIn } from 'react-icons/fa'
+import Image from 'next/image'
+
 const Footer = () => {
     return (
         <>
             <div className=' grid grid-cols-4 text-[#666] mt-44 ml-32'>
                 <div className="box1">
-                    <img src='https://full-stack-ecommerce-clothing-web.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FLogo.3267fed8.png&w=256&q=75' />
+                    <Image
+                    width={100}
+                    height={100}
+                     src='https://full-stack-ecommerce-clothing-web.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FLogo.3267fed8.png&w=256&q=75' 
+                     alt={"logo"}
+                     />
                     <br /> <p>Small, artisan label that offers a thoughtfully curated collection of high quality everyday essentials made.</p>
                     <br />
                     <div className="text-black flex justify-between w-44">
                         <div className='border bg-[#f1f1f1] rounded-lg p-3'><BsTwitter /></div>
                         <div className='border bg-[#f1f1f1] rounded-lg p-3'>  <FaFacebookF /></div>
                         <div className='border bg-[#f1f1f1] rounded-lg p-3'> <FaLinkedinIn /></div>
-                      
                     </div>
-
                 </div>
                 <div className="box2 ml-20">
                     <h1 className='text-lg font-bold'>Company</h1>
