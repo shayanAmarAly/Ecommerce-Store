@@ -14,7 +14,7 @@ const Section1 = () => {
                             <h1 className='text-sm'>For the summer season</h1>
                         </span>
                         <Image 
-                        width={100}
+                        width={250}
                         height={100}
                         alt='secImg' src='https://full-stack-ecommerce-clothing-web.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fevent1.6f776995.png&w=384&q=75' />
                     </div>

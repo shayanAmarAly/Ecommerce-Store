@@ -7,7 +7,7 @@ import Image from 'next/image'
 const Footer = () => {
     return (
         <>
-            <div className=' grid grid-cols-4 text-[#666] mt-44 ml-32'>
+            <div className=' grid tablet:grid-cols-4 small:grid-cols-2 mobile:grid-cols-1 text-[#666] mt-44 tablet:ml-32 mobile:ml-5'>
                 <div className="box1">
                     <Image
                     width={100}
@@ -23,7 +23,7 @@ const Footer = () => {
                         <div className='border bg-[#f1f1f1] rounded-lg p-3'> <FaLinkedinIn /></div>
                     </div>
                 </div>
-                <div className="box2 ml-20">
+                <div className="box2 tablet:ml-20 mobile:ml-2 mobile:my-10 tablet:my-0">
                     <h1 className='text-lg font-bold'>Company</h1>
                     <ul className='text-sm space-y-3 mt-5'>
                         <li>About</li>
@@ -33,7 +33,7 @@ const Footer = () => {
                         <li>Contact Us</li>
                     </ul>
                 </div>
-                <div className="box3 ml-10">
+                <div className="box3 tablet:ml-10 mobile:ml-2">
                     <h1 className='text-lg font-bold'>Support</h1>
                     <ul className='text-sm space-y-3 mt-5'>
                         <li>Support Carrer</li>
@@ -42,7 +42,7 @@ const Footer = () => {
                     </ul>
                 </div>
               
-                <div className="box4">
+                <div className="box4 mobile:ml-2 tablet:ml-0 mobile:my-10 tablet:my-0">
                     <h1 className='text-lg font-bold'>Contact</h1>
                     <ul className='text-sm space-y-3 mt-5'>
                         <li>Whatsapp</li>
@@ -50,8 +50,8 @@ const Footer = () => {
                     </ul>
                 </div>
             </div>
-            <hr className='mt-28'/>
-            <div className='grid grid-cols-3 ml-32 mt-10'>
+            <hr className='tablet:mt-28 mobile:mt-5 '/>
+            <div className='grid gap-5 grid-cols-3 tablet:ml-32 mobile:text-xs tablet:text-sm tablet:mt-10 mobile:my-2'>
                 <div>
                     <p>Copyright © 2022 Dine <br />Market</p>
                 </div>

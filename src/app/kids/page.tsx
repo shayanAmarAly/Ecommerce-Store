@@ -23,11 +23,11 @@ const Page = () => {
                     <h1 className='text-4xl font-bold text-center'>Check What We Have
                     </h1>
                 </div>
-                <div className='grid mobile:grid-cols-1  tablet:grid-cols-3 max-w-[900px] mx-auto mt-10 '>
+                <div className='grid mobile:grid-cols-1 small:grid-cols-2 tablet:grid-cols-4 gap:20 max-w-[1200px] mx-auto mt-10 '>
                     {
                         products.map((product: any, id: any) => {
                             return <div className='mt-5 mobile:ml-3 tablet:ml-0' key={id}>
-                                <Image src={product.image} alt='logo' className='h-80 bg-cover ' width={200} height={100} />
+                                <Image src={product.image} alt='logo' className='h-80 bg-cover ' width={300} height={100} />
                                 <h2 className="card-title">{product.title}</h2>
                                 <h1 className='font-semibold text-lg py-3'>{product.sub_category}</h1>
                                 <h1 className='text-xl font-bold'>${product.Price}</h1>

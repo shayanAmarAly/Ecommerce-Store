@@ -23,12 +23,12 @@ const Page = () => {
                     <h1 className='text-blue-700 font-bold text-sm text-center mt-32'>PRODUCTS</h1>
                     <h1 className='text-4xl font-bold text-center'>Check What We Have</h1>
                 </div>
-                <div className='grid mobile:grid-cols-1  tablet:grid-cols-3 max-w-[900px] mx-auto mt-10 '>
+                <div className='grid mobile:grid-cols-1 small:grid-cols-2  tablet:grid-cols-4 gap-20 max-w-[1200px] mx-auto mt-10 '>
                     {
                         products.map((product: any, id: any) => {
                             return <div className='mt-5 mobile:ml-3 tablet:ml-0' key={id}>
                                 <Link href={`https://ecommerce-flame-delta.vercel.app/productDetail/${product._id}`}>
-                                <Image src={product.image} alt='logo' className='h-auto w-auto bg-cover' width={200} height={100} />
+                                <Image src={product.image} alt='logo' className='h-auto hover:scale-110 duration-700 w-auto bg-cover' width={400} height={300} />
                                 <h1 className="card-title">{product.title}</h1>
                                 <h2 className='font-semibold text-lg py-3'>{product.sub_category}</h2>
                                 <h2 className='text-xl font-bold'>${product.Price}</h2>
