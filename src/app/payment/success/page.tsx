@@ -6,9 +6,9 @@ import Link from 'next/link'
 const Page = () => {
   return (
     <>
-      <div className='tablet:w-[900px]  small:w-[700px] mx-auto tablet:flex small:flex mt-10'>
+      <div className='tablet:w-[900px]  small:w-[700px] mx-auto tablet:flex small:flex mt-32'>
         <div>
-          <img src='emoji.jpg' className='w-[600px]' />
+          <img src='/emoji.jpg' className='w-[600px]' />
         </div>
         <div className='mt-32'>
           <h1 className='text-3xl text-gray-600 font-bold'>

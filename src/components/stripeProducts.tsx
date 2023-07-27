@@ -104,8 +104,8 @@ export default function Product() {
   }, [dispatch]);
 
   return (
-    <div>
-      <h1 className='text-3xl text-black font-bold'>Shopping Cart</h1>
+    <div className="tablet:w-[1100px] mx-auto">
+      <h1 className='text-3xl mt-40   text-black font-bold'>Shopping Cart</h1>
       {
         (data) ? (
           <div className="tablet:flex justify-between mt-20">
