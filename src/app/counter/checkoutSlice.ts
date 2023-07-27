@@ -8,7 +8,7 @@ export type data = {
     title: string,
     price: number,
     image: string,
-    quantity: 0
+    quantity: number
 }
 
 interface CheckoutState {

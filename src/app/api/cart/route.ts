@@ -14,6 +14,7 @@ const newEntry: NewUser = {
   title: "trouser Product",
   price: 30,
   image: "trouser.jpg",
+  quantity: 1
 };
 
 export async function GET(req: NextRequest) {
@@ -26,7 +27,7 @@ export async function GET(req: NextRequest) {
 
 
 export async function POST(req: NextRequest, res: NextResponse) {
-  const { id, userid, productid, title, price, image } = await req.json();
+  const { id, userid, productid, title, price, image, quantity } = await req.json();
   const responseObject: NewUser = {
     id: id,
     userid: userid,
@@ -34,6 +35,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     title: title,
     price: price,
     image: image,
+    quantity: quantity
   };
   const sendData = await db.insert(UsersTable).values(responseObject).returning();
 

@@ -19,7 +19,7 @@ const detail = async (param: any) => {
 
 const Page = ({ params }: { params: { slugs: string } }) => {
   const [item, setItem] = useState<any>();
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(1);
   const { userId } = useAuth();
   console.log("product detail page user id is " , userId);
   console.log(typeof userId);
@@ -66,6 +66,7 @@ const Page = ({ params }: { params: { slugs: string } }) => {
         title: item.name,
         price: item.price,
         image: item.image,
+        quantity: count
       })
     });
     const jsonResponse = await request.json();
@@ -83,7 +84,11 @@ const Page = ({ params }: { params: { slugs: string } }) => {
   };
 
   const decrement = () => {
-    setCount(count - 1);
+    if (count > 1){
+      setCount(count - 1);
+    }else{
+      setCount(1);
+    }
   };
 
   if (!item) {
@@ -115,9 +120,9 @@ const Page = ({ params }: { params: { slugs: string } }) => {
                 <div className='flex'>
                   <h1 className='font-bold mt-4 '>Quantity:</h1>
                   <div className='flex space-x-4 ml-5 '>
-                    <button onClick={increment} className='text-2xl  rounded-full w-10 h-10 shadow-lg'>+</button>
-                    <p className='text-xl mt-2'> {count}</p>
                     <button onClick={decrement} className='text-2xl  rounded-full w-10 h-10 shadow-lg'>-</button>
+                    <p className='text-xl mt-2'> {count}</p>
+                    <button onClick={increment} className='text-2xl  rounded-full w-10 h-10 shadow-lg'>+</button>
                   </div>
                 </div>
                 <div className='flex tablet:mt-10 mobile:mt-3 '>

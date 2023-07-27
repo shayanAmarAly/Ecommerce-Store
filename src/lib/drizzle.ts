@@ -20,6 +20,7 @@ import {
     title: varchar("title").notNull(),
     price: integer("price").notNull(),
     image: varchar("image").notNull(),
+    quantity: integer("quantity").notNull()
     },
     (users) => {
       return {

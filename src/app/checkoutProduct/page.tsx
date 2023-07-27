@@ -10,6 +10,7 @@ import { fetchCartData } from "@/app/counter/counterSlice"
 import { useAuth } from "@clerk/nextjs";
 import { setCookie } from "cookies-next";
 import Image from "next/image";
+import { increaseQuantity, decreaseQuantity } from "@/app/counter/checkoutSlice";
 
 const Product = () => {
   const [item, setItem] = useState({
@@ -30,10 +31,13 @@ const Product = () => {
     setItem({ ...item, quantity: Math.max(0, value) });
   };
 
-  const onQuantityPlus = () => {
+  const onQuantityPlus = (productId: number) => {
+    dispatch(increaseQuantity({ productId }));
+    increaseQuantity(item)
     changeQuantity(item.quantity + 1);
   };
-  const onQuantityMinus = () => {
+  const onQuantityMinus = (productId: number) => {
+    dispatch(decreaseQuantity({ productId }));
     changeQuantity(item.quantity - 1);
   };
   const onInputChange = (e: { target: { value: string } }) => {
@@ -86,6 +90,26 @@ const Product = () => {
   const totalPrice: number = data.map((product) => product.price).reduce((acc, price) => acc + price, 0);
   console.log(totalPrice);
 
+  // Calculate the total quantity of all products
+  const getTotalQuantity = (): number => {
+    const totalQuantity = data.reduce((total, item) => total + item.quantity, 0);
+    return totalQuantity;
+  };
+
+  // Calculate the price of an individual product based on its quantity
+  const getProductPrice = (productId: number): number => {
+    const product = data.find((item) => item.id === productId);
+    if (product) {
+      return product.price * product.quantity;
+    }
+    return 0;
+  };
+
+  // Calculate the sum of prices of all products
+  const getTotalPrice = (): number => {
+    const totalPrice = data.reduce((total, item) => total + item.price * item.quantity, 0);
+    return totalPrice;
+  };
 
   useEffect(() => {
     dispatch(fetchCheckoutData());
@@ -114,15 +138,15 @@ const Product = () => {
 
 
                         <h1 className='text-yellow-500 font-bold mt-2'>5 Working Days</h1>
-                        <h1 className='font-bold text-xl mt-3'>${value.price}</h1>
+                        <h1 className='font-bold text-xl mt-3'>${getProductPrice(value.id)}</h1>
                       </div>
                       <button> <RiDeleteBin6Line className="text-2xl ml-44 " onClick={() => deleteCartItem(value.id)} />
                         <div className='flex space-x-4 ml-16 mt-32'>
                           <button
-                            onClick={onQuantityMinus} className='text-2xl  rounded-full w-10 h-10 shadow-lg'
+                            onClick={() => { onQuantityMinus(value.id) }} className='text-2xl  rounded-full w-10 h-10 shadow-lg'
                           > - </button>
-                          <input type="number" className="text-xl mt-2" onChange={onInputChange} value={item.quantity} />
-                          <button onClick={onQuantityPlus}
+                          <input type="number" className="text-xl mt-2" onChange={onInputChange} value={value.quantity} />
+                          <button onClick={() => { onQuantityPlus(value.id) }}
                             className='text-2xl  rounded-full w-10 h-10 shadow-lg'> + </button>
                         </div>
                       </button>
@@ -136,11 +160,11 @@ const Product = () => {
 
               <div className='flex justify-between mt-5' >
                 <p>Quantity</p>
-                <p>{data.length} Product/s</p>
+                <p>{getTotalQuantity()} Product/s</p>
               </div>
               <div className='flex justify-between mt-3'  >
                 <p>Price</p>
-                <p>${totalPrice}</p>
+                <p>${getTotalPrice()}</p>
               </div>
               <button
                 disabled={data.length === 0}
