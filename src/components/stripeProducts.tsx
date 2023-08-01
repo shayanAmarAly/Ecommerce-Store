@@ -1,20 +1,17 @@
 "use client";
-import Image from "next/image";
-import axios from "axios";
 import { loadStripe } from "@stripe/stripe-js";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { useEffect, useState } from "react";
-import { AppDispatch } from "@/app/store";
-import CartData from "@/components/displayCheckoutProducts"
-import FetchCartButton from "@/components/FetchCheckoutProducts"
+import { AppDispatch } from "../store";
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/app/store';
-import data from "@/app/counter/checkoutSlice"
 import { fetchCheckoutData } from "@/app/counter/checkoutSlice"
 import { fetchCartData } from "@/app/counter/counterSlice"
-import { increaseQuantity, decreaseQuantity } from '@/app/counter/checkoutSlice';
+import { useAuth } from "@clerk/nextjs";
+import { setCookie } from "cookies-next";
+import Image from "next/image";
 
-export default function Product() {
+const Product = () => {
   const [item, setItem] = useState({
     name: "Apple AirPods",
     description: "Latest Apple AirPods.",
@@ -23,39 +20,12 @@ export default function Product() {
     quantity: 0,
     price: 999,
   });
+  const { userId } = useAuth();
+  setCookie("useriid", userId, { maxAge: 3600 });
   const dispatch = useDispatch<AppDispatch>();
-  const {data, loading} = useSelector((state: RootState) => state.checkout);
+  const { data } = useSelector((state: RootState) => state.checkout);
+  const { loading } = useSelector((state: RootState) => state.checkout);
 
-
-  const publishableKey = process.env
-    .NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string;
-  const stripePromise = loadStripe(publishableKey);
-
-  const createCheckOutSession = async () => {
-    const stripe = await stripePromise;
-    const checkoutSession = await fetch(
-      "http://localhost:3000/api/create-stripe-session",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({data}),
-      }
-    );
-
-    console.log("Result------------- in prod page==========", checkoutSession);
-
-    const sessionID = await checkoutSession.json();
-    const result = await stripe?.redirectToCheckout({
-      sessionId: sessionID,
-    });
-    if (result?.error) {
-      alert(result.error.message);
-    }
-    // setLoading(false);
-  };
-  
   const changeQuantity = (value: number) => {
     setItem({ ...item, quantity: Math.max(0, value) });
   };
@@ -70,19 +40,38 @@ export default function Product() {
     changeQuantity(parseInt(e.target.value));
   };
 
-  const handleIncreaseQuantity = (productId: number) => {
-    dispatch(increaseQuantity({ productId }));
-    console.log("product with id",productId, "increase")
+  const publishableKey = process.env
+    .NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string;
+  const stripePromise = loadStripe(publishableKey);
+
+  const createCheckOutSession = async () => {
+    const stripe = await stripePromise;
+    const checkoutSession = await fetch(
+      "api/create-stripe-session",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ data }),
+      }
+    );
+
+    console.log("Result------------- in prod page==========", checkoutSession);
+
+    const sessionID = await checkoutSession.json();
+    const result = await stripe?.redirectToCheckout({
+      sessionId: sessionID,
+    });
+    if (result?.error) {
+      alert(result.error.message);
+    }
   };
 
-  const handleDecreaseQuantity = (productId: number) => {
-    dispatch(decreaseQuantity({ productId }));
-    console.log("product with id",productId, "decrease")
-  };
-  
+
   const deleteCartItem = async (productId: any) => {
-    console.log("method triggered with productID",productId);
-    const response = await fetch(`http://localhost:3000/api/cart?productId=${productId}`, {
+    console.log("method triggered with productID", productId);
+    const response = await fetch(`api/cart?productId=${productId}`, {
       method: "DELETE",
       headers: {
         'Content-Type': 'application/json',
@@ -94,29 +83,29 @@ export default function Product() {
     return response.json();
   }
 
-  const totalPrice = data.reduce((total, product) => {
-    console.log(typeof data[0].price)
-    return total + product.price * 1;
-  }, 0);
+  const totalPrice: number = data.map((product) => product.price).reduce((acc, price) => acc + price, 0);
+  console.log(totalPrice);
+
 
   useEffect(() => {
     dispatch(fetchCheckoutData());
   }, [dispatch]);
 
   return (
-    <div className="tablet:w-[1100px] mx-auto">
-      <h1 className='text-3xl mt-40   text-black font-bold'>Shopping Cart</h1>
+    <div>
+      <h1 className='text-3xl mt-60 text-black font-bold'>Shopping Cart</h1>
       {
         (data) ? (
           <div className="tablet:flex justify-between mt-20">
-            <div className=' w-[1000px] mx-auto '>
+            <div className=' w-[800px] mx-auto '>
               {
-                data.map((value: any, id: number) => {
+                data.map((value: any, id: any) => {
                   return <div key={id}>
-                    <div className=' flex hover:shadow-lg tablet:w-[800px] mobile:w-[600px] gap-5 mt-5 '>
+                    <div className=' flex hover:shadow-lg tablet:w-[600px] mobile:w-[400px] gap-5 mt-5 '>
                       <div>
-                        <img className='w-[200px]' src={value.image} />
+                        <Image className='w-[200px]' width={100} height={100} src={value.image} alt={"image"} />
                       </div>
+
                       <div className='space-y-2'>
                         <h1 className='text-xl '>{value.title}</h1>
                         <p className='text-gray-400 text-xl'>Sweater</p>
@@ -124,22 +113,16 @@ export default function Product() {
                         <h1 className='font-bold'>Delivery Estimation</h1>
 
 
-                        <h1 className='text-yellow-500 font-bold mt-2'>5 Working Days
-
-                        </h1>
+                        <h1 className='text-yellow-500 font-bold mt-2'>5 Working Days</h1>
                         <h1 className='font-bold text-xl mt-3'>${value.price}</h1>
                       </div>
                       <button> <RiDeleteBin6Line className="text-2xl ml-44 " onClick={() => deleteCartItem(value.id)} />
                         <div className='flex space-x-4 ml-16 mt-32'>
                           <button
-                            // onClick={onQuantityMinus} 
-                            onClick={() => handleDecreaseQuantity(value.id)}
-                            className='text-2xl  rounded-full w-10 h-10 shadow-lg'
+                            onClick={onQuantityMinus} className='text-2xl  rounded-full w-10 h-10 shadow-lg'
                           > - </button>
-                          <input type="number" className="text-xl mt-2" onChange={onInputChange} value={value.quantity} />
-                          <button 
-                          // onClick={onQuantityPlus}
-                          onClick={() => handleIncreaseQuantity(value.id)}
+                          <input type="number" className="text-xl mt-2 w-10" onChange={onInputChange} value={item.quantity} />
+                          <button onClick={onQuantityPlus}
                             className='text-2xl  rounded-full w-10 h-10 shadow-lg'> + </button>
                         </div>
                       </button>
@@ -153,67 +136,29 @@ export default function Product() {
 
               <div className='flex justify-between mt-5' >
                 <p>Quantity</p>
-                <p>{data.length}Product/s</p>
+                <p>{data.length} Product/s</p>
               </div>
               <div className='flex justify-between mt-3'  >
                 <p>Price</p>
                 <p>${totalPrice}</p>
               </div>
-
               <button
-          disabled={data.length === 0}
-          onClick={createCheckOutSession}
-          className="bg-black text-white w-[240px] text-center py-2 font-semibold mt-5 disabled:cursor-not-allowed disabled:bg-blue-100"
-        >
-         {loading ? 'Processing...' : 'checkout to proceed'}
-        </button>
-            
+                disabled={data.length === 0}
+                onClick={createCheckOutSession}
+                className="bg-black text-white w-[240px] text-center py-2 font-semibold mt-5 disabled:cursor-not-allowed disabled:bg-blue-100"
+              >
+                {loading ? 'Processing...' : 'checkout to proceed'}
+              </button>
             </div>
-
           </div>
         ) : (
           <div>{loading}</div>
         )
       }
     </div>
-  );
+
+  )
 }
 
-{/* <div className="max-w-sm flex mx-auto mt-20">
-      <div className="shadow-lg border rounded p-2 ">
-        <Image src={item.image} width={300} height={150} alt={item.name} />
-        <h2 className="text-2xl">$ {item.price}</h2>
-        <h3 className="text-xl">{item.name}</h3>
-        <p className="text-gray-500">{item.description}</p>
-        <p className="text-sm text-gray-600 mt-1">Quantity:</p>
-        <div className="border rounded">
-          <button
-            onClick={onQuantityMinus}
-            className="bg-blue-500 py-2 px-4 text-white rounded hover:bg-blue-600"
-          >
-            -
-          </button>
-          <input
-            type="number"
-            className="p-2"
-            onChange={onInputChange}
-            value={item.quantity}
-          />
-          <button
-            onClick={onQuantityPlus}
-            className="bg-blue-500 py-2 px-4 text-white rounded hover:bg-blue-600"
-          >
-            +
-          </button>
-        </div>
-        <p>Total: ${item.quantity * item.price}</p>
-        <button
-          disabled={item.quantity === 0}
-          onClick={createCheckOutSession}
-          className="bg-blue-500 hover:bg-blue-600 text-white block w-full py-2 rounded mt-2 disabled:cursor-not-allowed disabled:bg-blue-100"
-        >
-         {loading ? 'Processing...' : 'Buy'}
-        </button>
-      </div>
-    
-    </div> */}
+export default Product;
+

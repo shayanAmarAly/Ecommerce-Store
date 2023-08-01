@@ -25,7 +25,7 @@ const Page =  () => {
                     <h1 className='text-4xl font-bold text-center'>Check What We Have
                     </h1>
                 </div>
-                <div className='grid mobile:grid-cols-1  tablet:grid-cols-3 max-w-[900px] mx-auto mt-10 '>
+                <div className='grid mobile:grid-cols-1 gap-10  tablet:grid-cols-3 tablet:max-w-[900px] mx-auto mt-10 '>
                     {
                         products.map((product: any, id: any) => {
                             return <div className='mt-5 mobile:ml-3 tablet:ml-0' key={id}>
